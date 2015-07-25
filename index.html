@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<title>Blake Faris | YouTube API Demo</title>
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="/resources/stylesheets/oneAndOnlyStyleSheet.css">
+	</head>
+	<body>
+
+		<header>
+			<p id="sign-in-container" class="hidden">
+				<a href="#" id="sign-in" title="Sign into your Google account"><span class="fa fa-sign-in"></span> Sign In</a>
+				<a href="#" id="sign-out" title="Sign out of your Google account"><span class="fa fa-sign-out"></span> Sign Out</a>
+			</p>
+			<p id="sign-in-loading">
+				<i class="fa fa-spinner fa-spin"></i> Hang tight
+			</p>
+		</header>
+
+		<main>
+			<h1>Welcome</h1>
+			<p>
+				This is a single page web app in which I will be using the YouTube Data API for a demo.
+			</p>
+
+			<form class="form-inline">
+				<div class="form-group">
+					<input id="query" type="text" class="form-control"/> <button id="search-button" class="btn btn-primary disabled" disabled onclick="search()">Search</button>
+				</div>
+			</form>
+			<div id="search-container"></div>
+		</main>
+
+		<footer>
+			<div class="contact-info">
+				<ul class="list-unstyled">
+					<li>Blake Faris</li>
+					<li>One of those software guys</li>
+					<li><a title="Connect with me on LinkedIn" href="https://www.linkedin.com/in/blakefaris">LinkedIn Profile</a></li>
+				</ul>
+			</div>
+		</footer>
+
+		<!-- combine and minify before releasing to production -->
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="/resources/js/auth.js"></script>
+		<script src="/resources/js/search.js"></script>
+		<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+	</body>
+</html>

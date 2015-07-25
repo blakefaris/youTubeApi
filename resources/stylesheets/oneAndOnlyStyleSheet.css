@@ -1,0 +1,30 @@
+/*
+	Keeping it simple.
+	Small one page web app, no need to complicate with SASS or LESS, yet.
+	This is the one, and only non external stylesheet.
+*/
+
+body {
+	background-color: #f9f9f9;
+}
+
+header,
+main,
+footer {
+	padding: 0 20px;
+}
+
+header {
+	background-color: #333;
+	border-bottom: 1px solid #ccc;
+	color: #f9f9f9;
+	margin-bottom: 5px;
+	padding-top: 5px;
+	padding-bottom: 5;
+}
+
+footer {
+	border-top: 1px solid #ccc;
+	margin-top: 20px;
+	padding-top: 20px;
+}
