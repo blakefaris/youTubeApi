@@ -30,6 +30,15 @@
 				</div>
 			</form>
 			<div id="search-container"></div>
+
+			<h2>Playlists</h2>
+			<div id="playlists-container"><i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists</div>
+
+			<h2>Liked Videos</h2>
+			<div>
+				<div id="video-container"><i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have liked any videos</div>
+				<button type="button" class="btn btn-default btn-sm" onclick="previousPage()" id="prev-button"><i class="fa fa-angle-double-left"></i> Previous</button> <button type="button" class="btn btn-default btn-sm" onclick="nextPage()" id="next-button">Next <i class="fa fa-angle-double-right"></i></button>
+			</div>
 		</main>
 
 		<footer>
@@ -45,6 +54,8 @@
 		<!-- combine and minify before releasing to production -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="/resources/js/auth.js"></script>
+		<script src="/resources/js/playLists.js"></script>
+		<script src="/resources/js/playlistItems.js"></script>
 		<script src="/resources/js/search.js"></script>
 		<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 	</body>
