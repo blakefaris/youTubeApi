@@ -11,6 +11,7 @@ function handleAPILoaded() {
   .removeClass('disabled')
   .attr('disabled', false);
 
+  // TODO: this will be solved with Angular
   // yikes, calling global functions not related to search
   requestUserLikesPlaylistId();
   requestUserPlaylists();

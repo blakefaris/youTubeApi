@@ -1,12 +1,17 @@
 <!DOCTYPE html>
-<html>
+<html ng-app="youTubeDataApiApp">
 	<head>
-		<title>Blake Faris | YouTube API Demo</title>
+		<title>Blake Faris | YouTube Data API Demo</title>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
 		<link rel="stylesheet" href="/resources/stylesheets/oneAndOnlyStyleSheet.css">
+
+		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+		<script src="/resources/js/app.js"></script>
+		<script src="/resources/js/services/authService.js"></script>
+		<script src="/resources/js/controllers/youTubeDataApiController.js"></script>
 	</head>
-	<body>
+	<body ng-controller="YouTubeDataApiController">
 
 		<header>
 			<p id="sign-in-container" class="hidden">
@@ -21,7 +26,7 @@
 		<main>
 			<h1>Welcome</h1>
 			<p>
-				This is a single page web app in which I will be using the YouTube Data API for a demo.
+				This is a single page web app in which I will be using the <a href="https://developers.google.com/youtube/v3/docs">YouTube Data API</a> for a demo.
 			</p>
 
 			<form class="form-inline">
@@ -29,16 +34,16 @@
 					<input id="query" type="text" class="form-control"/> <button id="search-button" class="btn btn-primary disabled" disabled onclick="search()">Search</button>
 				</div>
 			</form>
-			<div id="search-container"></div>
-
+		
 			<h2>Playlists</h2>
-			<div id="playlists-container"><i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists</div>
-
-			<h2>Liked Videos</h2>
-			<div>
-				<div id="video-container"><i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have liked any videos</div>
-				<button type="button" class="btn btn-default btn-sm" onclick="previousPage()" id="prev-button"><i class="fa fa-angle-double-left"></i> Previous</button> <button type="button" class="btn btn-default btn-sm" onclick="nextPage()" id="next-button">Next <i class="fa fa-angle-double-right"></i></button>
+			<div id="playlists-container">
+				<i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists
 			</div>
+
+			<h3>Videos</h3>
+			<div id="search-container"></div>
+			<div id="video-container"><i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have liked any videos</div>
+			<button type="button" class="btn btn-default btn-sm" onclick="previousPage()" id="prev-button"><i class="fa fa-angle-double-left"></i> Previous</button> <button type="button" class="btn btn-default btn-sm" onclick="nextPage()" id="next-button">Next <i class="fa fa-angle-double-right"></i></button>
 		</main>
 
 		<footer>
@@ -53,7 +58,6 @@
 
 		<!-- combine and minify before releasing to production -->
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-		<script src="/resources/js/auth.js"></script>
 		<script src="/resources/js/playLists.js"></script>
 		<script src="/resources/js/playlistItems.js"></script>
 		<script src="/resources/js/search.js"></script>
