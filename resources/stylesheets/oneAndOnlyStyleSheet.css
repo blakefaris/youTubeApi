@@ -28,3 +28,13 @@ footer {
 	margin-top: 20px;
 	padding-top: 20px;
 }
+
+.video-list {
+	background-color: #fff;
+}
+
+.video {
+	border-top: 1px solid #ccc;
+	margin-top: 10px;
+	padding-top: 10px;
+}

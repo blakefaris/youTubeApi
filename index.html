@@ -9,6 +9,7 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
 		<script src="/resources/js/app.js"></script>
 		<script src="/resources/js/services/authService.js"></script>
+		<script src="/resources/js/services/searchService.js"></script>
 		<script src="/resources/js/controllers/youTubeDataApiController.js"></script>
 	</head>
 	<body ng-controller="YouTubeDataApiController as youTubeDataApiController">
@@ -31,20 +32,32 @@
 			</p>
 
 			<form class="form-inline">
+				<strong>Sort by:</strong>
+				<select ng-model="youTubeDataApiController.sortBy">
+					<option value="relevance">Relevance</option>
+					<option value="date">Date</option>
+					<option value="rating">Rating</option>
+				</select>
 				<div class="form-group">
-					<input id="query" type="text" class="form-control"/> <button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
+					<input id="query" type="text" class="form-control" ng-model="youTubeDataApiController.keywords"> <button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
 				</div>
 			</form>
 		
-			<h2>Playlists</h2>
-			<div id="playlists-container">
+			<strong>Playlists:</strong>
+			<span id="playlists-container">
 				<i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists
-			</div>
+			</span>
 
 			<h3>Videos</h3>
-			<div id="search-container"></div>
-			<div id="video-container"><i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have liked any videos</div>
+			<ul class="video-list list-unstyled">
+				<li class="video" ng-repeat="video in youTubeDataApiController.videos">
+					<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" /> 
+					<span><strong>{{video.snippet.title}} - {{video.id.videoId}}</strong></span>
+				</li>
+			</ul>
+			<!--
 			<button type="button" class="btn btn-default btn-sm" onclick="previousPage()" id="prev-button"><i class="fa fa-angle-double-left"></i> Previous</button> <button type="button" class="btn btn-default btn-sm" onclick="nextPage()" id="next-button">Next <i class="fa fa-angle-double-right"></i></button>
+			-->
 		</main>
 
 		<footer>
@@ -61,7 +74,6 @@
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 		<script src="/resources/js/playLists.js"></script>
 		<script src="/resources/js/playlistItems.js"></script>
-		<script src="/resources/js/search.js"></script>
 		<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 	</body>
 </html>

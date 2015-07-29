@@ -3,11 +3,13 @@
 	.controller('YouTubeDataApiController', 
 		['$scope', 
 		'$timeout', 
-		'authService', 
+		'authService',
+		'searchService',
 		function(
 			$scope, 
 			$timeout, 
-			authService) {
+			authService,
+			searchService) {
 
 		// assign context
 		var youTubeDataApiController = this;
@@ -15,6 +17,10 @@
 		youTubeDataApiController.isAuthorized = false;
 		youTubeDataApiController.isSearchDisabled = true;
 		youTubeDataApiController.isSearchProcessing = false;
+
+		youTubeDataApiController.keywords = '';
+		youTubeDataApiController.sortBy = 'relevance';
+		youTubeDataApiController.videos = [];
 
 		/*
 		 * Called external to Angular
@@ -26,7 +32,7 @@
 				youTubeDataApiController.isAuthorized = response.authenticated;
 
 				// TODO: Yikes, calling global functions. This will be solved with Angular services
-				requestUserLikesPlaylistId();
+				// requestUserLikesPlaylistId();
 				requestUserPlaylists();
 			});
 
@@ -36,11 +42,21 @@
 		};
 
 		$scope.search = function() {
-			// TODO Yikes, calling global function. This will be solved with Angular searchService which will return a promise
-			// youTubeDataApiController.isSearchDisabled = true;
-			// youTubeDataApiController.isSearchProcessing = true;
-			search();
-		}
+			youTubeDataApiController.isSearchDisabled = true;
+			youTubeDataApiController.isSearchProcessing = true;
+
+			searchService.search({
+				keywords: youTubeDataApiController.keywords,
+				order: youTubeDataApiController.sortBy
+			})
+			.then(function(response){
+				youTubeDataApiController.videos = response.videos;
+			})
+			.finally(function(){
+				youTubeDataApiController.isSearchDisabled = false;
+				youTubeDataApiController.isSearchProcessing = false;
+			});
+		};
 
 	}]);
 })();
