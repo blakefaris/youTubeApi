@@ -11,7 +11,7 @@
 		<script src="/resources/js/services/authService.js"></script>
 		<script src="/resources/js/controllers/youTubeDataApiController.js"></script>
 	</head>
-	<body ng-controller="YouTubeDataApiController">
+	<body ng-controller="YouTubeDataApiController as youTubeDataApiController">
 
 		<header>
 			<p id="sign-in-container" class="hidden">
@@ -24,6 +24,7 @@
 		</header>
 
 		<main>
+			
 			<h1>Welcome</h1>
 			<p>
 				This is a single page web app in which I will be using the <a href="https://developers.google.com/youtube/v3/docs">YouTube Data API</a> for a demo.
@@ -31,7 +32,7 @@
 
 			<form class="form-inline">
 				<div class="form-group">
-					<input id="query" type="text" class="form-control"/> <button id="search-button" class="btn btn-primary disabled" disabled onclick="search()">Search</button>
+					<input id="query" type="text" class="form-control"/> <button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
 				</div>
 			</form>
 		

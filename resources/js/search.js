@@ -5,18 +5,6 @@
  * Everything is on the global namespace... help, having a heart atta____________________________
  */
 
-// After the API loads, call a function to enable the search box.
-function handleAPILoaded() {
-  $('#search-button')
-  .removeClass('disabled')
-  .attr('disabled', false);
-
-  // TODO: this will be solved with Angular
-  // yikes, calling global functions not related to search
-  requestUserLikesPlaylistId();
-  requestUserPlaylists();
-}
-
 // Search for a specified string.
 function search() {
   var q = $('#query').val();

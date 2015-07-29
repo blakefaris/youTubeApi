@@ -3,12 +3,13 @@
  * From https://developers.google.com/youtube/v3/code_samples/javascript#search_by_keyword
  */
 (function () {
-	angular.module('youTubeDataApiApp').factory('authService', function() {
+	angular.module('youTubeDataApiApp').factory('authService', ['$q', function($q) {
 
 		// assign context
 		var authService = this;
 
 		// private
+		var deferred = $q.defer();
 
 		/* 
 		The client ID is obtained from the Google Developers Console
@@ -75,19 +76,21 @@
 		http://code.google.com/p/google-api-javascript-client/wiki/GettingStarted#Loading_the_Client
 		*/
 		function loadAPIClientInterfaces() {
-			// TODO: calls handleAPILoaded which is a global function defined in search.js.  Replace with some sort of flag/notification.
-			gapi.client.load('youtube', 'v3', handleAPILoaded);
+			gapi.client.load('youtube', 'v3', function(){
+				deferred.resolve({
+					// TODO: handle user not authenticated
+					authenticated: true
+				});
+			});
 		}
 
 		// public
 
 		authService.authorize = function() {
-			gapi.auth.init(function() {
-				// TODO: gross, is this setTimeout really needed, really?
-				window.setTimeout(checkAuth, 1);
-			});
+			gapi.auth.init(checkAuth);
+			return deferred.promise;
 		};
 
 		return authService;
-	});
+	}]);
 })();
