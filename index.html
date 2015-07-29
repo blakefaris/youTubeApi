@@ -2,14 +2,15 @@
 <html ng-app="youTubeDataApiApp">
 	<head>
 		<title>Blake Faris | YouTube Data API Demo</title>
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
-		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.4.0/css/font-awesome.min.css">
+		<link rel="stylesheet" href="/resources/stylesheets/external/bootstrap-3.3.5.min.css">
 		<link rel="stylesheet" href="/resources/stylesheets/oneAndOnlyStyleSheet.css">
 
-		<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.3/angular.min.js"></script>
+		<script src="/resources/js/external/angular-1.4.3.min.js"></script>
 		<script src="/resources/js/app.js"></script>
 		<script src="/resources/js/services/authService.js"></script>
 		<script src="/resources/js/services/searchService.js"></script>
+		<script src="/resources/js/services/videoPlayerService.js"></script>
 		<script src="/resources/js/controllers/youTubeDataApiController.js"></script>
 	</head>
 	<body ng-controller="YouTubeDataApiController as youTubeDataApiController">
@@ -25,7 +26,6 @@
 		</header>
 
 		<main>
-			
 			<h1>Welcome</h1>
 			<p>
 				This is a single page web app in which I will be using the <a href="https://developers.google.com/youtube/v3/docs">YouTube Data API</a> for a demo.
@@ -48,16 +48,17 @@
 				<i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists
 			</span>
 
+			<div id="player"></div>
+
 			<h3>Videos</h3>
 			<ul class="video-list list-unstyled">
 				<li class="video" ng-repeat="video in youTubeDataApiController.videos">
-					<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" /> 
-					<span><strong>{{video.snippet.title}} - {{video.id.videoId}}</strong></span>
+					<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.id.videoId)">
+						<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
+						<strong>{{video.snippet.title}}</strong>
+					</a>
 				</li>
 			</ul>
-			<!--
-			<button type="button" class="btn btn-default btn-sm" onclick="previousPage()" id="prev-button"><i class="fa fa-angle-double-left"></i> Previous</button> <button type="button" class="btn btn-default btn-sm" onclick="nextPage()" id="next-button">Next <i class="fa fa-angle-double-right"></i></button>
-			-->
 		</main>
 
 		<footer>
@@ -71,9 +72,10 @@
 		</footer>
 
 		<!-- combine and minify before releasing to production -->
-		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+		<script src="/resources/js/external/jquery-1.11.3.min.js"></script>
 		<script src="/resources/js/playLists.js"></script>
 		<script src="/resources/js/playlistItems.js"></script>
 		<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
+		<script src="https://www.youtube.com/iframe_api"></script>
 	</body>
 </html>

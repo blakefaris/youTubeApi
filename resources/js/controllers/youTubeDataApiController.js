@@ -5,11 +5,13 @@
 		'$timeout', 
 		'authService',
 		'searchService',
+		'videoPlayerService',
 		function(
 			$scope, 
 			$timeout, 
 			authService,
-			searchService) {
+			searchService,
+			videoPlayerService) {
 
 		// assign context
 		var youTubeDataApiController = this;
@@ -45,7 +47,7 @@
 			youTubeDataApiController.isSearchDisabled = true;
 			youTubeDataApiController.isSearchProcessing = true;
 
-			searchService.search({
+			return searchService.search({
 				keywords: youTubeDataApiController.keywords,
 				order: youTubeDataApiController.sortBy
 			})
@@ -56,6 +58,10 @@
 				youTubeDataApiController.isSearchDisabled = false;
 				youTubeDataApiController.isSearchProcessing = false;
 			});
+		};
+
+		$scope.play = function(videoId) {
+			return videoPlayerService.play(videoId);
 		};
 
 	}]);
