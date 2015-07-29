@@ -5,13 +5,13 @@
 		'$timeout', 
 		'authService',
 		'searchService',
-		'videoPlayerService',
+		'videoService',
 		function(
 			$scope, 
 			$timeout, 
 			authService,
 			searchService,
-			videoPlayerService) {
+			videoService) {
 
 		// assign context
 		var youTubeDataApiController = this;
@@ -23,6 +23,8 @@
 		youTubeDataApiController.keywords = '';
 		youTubeDataApiController.sortBy = 'relevance';
 		youTubeDataApiController.videos = [];
+
+		youTubeDataApiController.video;
 
 		/*
 		 * Called external to Angular
@@ -61,7 +63,14 @@
 		};
 
 		$scope.play = function(videoId) {
-			return videoPlayerService.play(videoId);
+			videoService.details(videoId)
+			.then(function(response){
+				youTubeDataApiController.video = response.video;
+
+				//TODO: faster, simpler, and easier than pulling in iframe_api.  However, look at using a custom directive or ng-bind-html
+				// Manipulating the DOM within an Angular controller using jQuery, hand slap.
+				$('#video-player').html(youTubeDataApiController.video.player.embedHtml);
+			});
 		};
 
 	}]);

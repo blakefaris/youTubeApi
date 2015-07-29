@@ -2,7 +2,6 @@
 	angular.module('youTubeDataApiApp',[]);
 })();
 
-
 /**
  * Onload callback for apis.google.com/js/client.js
  *
@@ -11,11 +10,4 @@
 function googleApiClientReady() {
 	// Calls youTubeDataApiContorller.authorize()
 	angular.element(document.body).scope().authorize();
-}
-
-/**
- * Onload callback for https://www.youtube.com/iframe_api
- */
-function onYouTubeIframeAPIReady() {
-	// TODO: notify that the API code has downloaded
 }

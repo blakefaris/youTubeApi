@@ -23,6 +23,9 @@
 				part: 'snippet',
 				order: params.order || 'relevance',
 				//pageToken: nextPageToken prevPageToken
+				type: 'video',
+				videoEmbeddable: true,
+				videoSyndicated: true, 
 				maxResults: 10
 			});
 

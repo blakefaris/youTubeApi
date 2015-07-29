@@ -10,7 +10,7 @@
 		<script src="/resources/js/app.js"></script>
 		<script src="/resources/js/services/authService.js"></script>
 		<script src="/resources/js/services/searchService.js"></script>
-		<script src="/resources/js/services/videoPlayerService.js"></script>
+		<script src="/resources/js/services/videoService.js"></script>
 		<script src="/resources/js/controllers/youTubeDataApiController.js"></script>
 	</head>
 	<body ng-controller="YouTubeDataApiController as youTubeDataApiController">
@@ -42,17 +42,38 @@
 					<input id="query" type="text" class="form-control" ng-model="youTubeDataApiController.keywords"> <button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
 				</div>
 			</form>
-		
-			<strong>Playlists:</strong>
-			<span id="playlists-container">
-				<i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists
-			</span>
 
-			<div id="player"></div>
+			<div id="playlists">
+				<strong>Playlists:</strong>
+				<span id="playlists-container">
+					<i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists
+				</span>
+			</div>
+
+			<div id="video-selected" class="video-selected" ng-show="youTubeDataApiController.video">
+				<div id="video-player" class="video-player"></div>
+
+				<div id="video-details" class="video-details">
+					<div class="row video-details-row">
+						<div class="col-sm-2"><strong>Title:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.snippet.title}}</div>
+					</div>
+					<div class="row video-details-row">
+						<div class="col-sm-2"><strong>Channel:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.snippet.channelTitle}}</div>
+					</div>
+					<div class="row video-details-row">
+						<div class="col-sm-2"><strong>Likes:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.statistics.likeCount}}</div>
+					</div>
+					<div class="row video-details-row">
+						<div class="col-sm-2"><strong>Dislikes:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.statistics.dislikeCount}}</div>
+					</div>
+				</div>
+
+				<div id="video-comments"></div>
+			</div>
 
 			<h3>Videos</h3>
 			<ul class="video-list list-unstyled">
-				<li class="video" ng-repeat="video in youTubeDataApiController.videos">
+				<li class="video-list-item" ng-repeat="video in youTubeDataApiController.videos">
 					<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.id.videoId)">
 						<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
 						<strong>{{video.snippet.title}}</strong>
@@ -76,6 +97,5 @@
 		<script src="/resources/js/playLists.js"></script>
 		<script src="/resources/js/playlistItems.js"></script>
 		<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
-		<script src="https://www.youtube.com/iframe_api"></script>
 	</body>
 </html>
