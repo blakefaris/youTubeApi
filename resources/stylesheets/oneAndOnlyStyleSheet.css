@@ -25,7 +25,7 @@ header {
 
 main {
 	margin: 0 auto;
-	max-width: 1080px;
+	max-width: 960px;
 }
 
 footer {
@@ -42,9 +42,13 @@ footer {
 	background-color: #000;
 }
 
-.video-details {
+.video-details,
+.video-comments {
+	background-color: #fff;
+	border: 1px solid #ccc;
 	margin-top: 15px;
-	text-align: left
+	padding: 10px;
+	text-align: left;
 }
 
 .video-details-row {

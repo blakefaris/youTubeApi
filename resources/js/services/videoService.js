@@ -7,10 +7,10 @@
 		// public
 
 		/*
-		 * Load and details for a video using YouTube Data API.
+		 * Get details for a video using YouTube Data API.
 		 *
 		 * Params:
-		 	videoId: String Video ID to play
+		 	videoId: String Video ID to get details for
 		 */
 		videoService.details = function(videoId) {
 			var deferred = $q.defer();
@@ -23,6 +23,29 @@
 			request.execute(function(response) {
 				deferred.resolve({
 					video: response.items ? response.items[0] : {}
+				});
+			});
+			
+			return deferred.promise;
+		};
+
+		/*
+		 * Get comments for a video using YouTube Data API.
+		 *
+		 * Params:
+		 	videoId: String Video ID to get comments for
+		 */
+		videoService.comments = function(videoId) {
+			var deferred = $q.defer();
+
+			var request = gapi.client.youtube.commentThreads.list({
+				videoId: videoId,
+				part: 'snippet'
+			});
+
+			request.execute(function(response) {
+				deferred.resolve({
+					comments: response.items ? response.items[0] : null
 				});
 			});
 			

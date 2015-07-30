@@ -20,7 +20,7 @@
 		// TODO: wipe API key after demo and replace with token that needs to be replaced.
 		var OAUTH2_CLIENT_ID = '649255159208-1dp85vegiijvo7n9ugkoifmiolcm1iir.apps.googleusercontent.com';
 		var OAUTH2_SCOPES = [
-			'https://www.googleapis.com/auth/youtube'
+			'https://www.googleapis.com/auth/youtube.force-ssl'
 		];
 
 		/*

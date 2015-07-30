@@ -54,7 +54,7 @@
 				</span>
 			</div>
 
-			<div id="video-selected" class="video-selected" ng-show="youTubeDataApiController.video">
+			<div id="video-selected" class="video-selected" ng-show="youTubeDataApiController.video.snippet">
 				<div id="video-player" class="video-player"></div>
 
 				<div id="video-details" class="video-details">
@@ -72,11 +72,19 @@
 					</div>
 				</div>
 
-				<div id="video-comments"></div>
+				<div id="video-comments" class="video-comments">
+					<div><strong>Comments:</strong></div>
+					<p>
+						{{youTubeDataApiController.video.comments}}
+						<span ng-show="!youTubeDataApiController.video.comments">
+							<i class="fa fa-spinner fa-spin"></i> Hang tight, still loading those important comments
+						</span>
+					</p>
+				</div>
 			</div>
 
 			<div ng-show="youTubeDataApiController.videos">
-				<h3>Videos</h3>
+				<h2>Videos</h2>
 				<form class="form-inline">
 					<input id="zipCode" type="text" placeholder="Filter by ZIP code" class="form-control" ng-model="youTubeDataApiController.zipCode"> 
 					<button id="filter-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Filter</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>

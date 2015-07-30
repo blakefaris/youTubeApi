@@ -1,5 +1,6 @@
 (function () {
 	angular.module('youTubeDataApiApp')
+	// TODO: this name is way too long, its making the index.html crazy
 	.controller('YouTubeDataApiController', 
 		['$scope', 
 		'$timeout', 
@@ -25,7 +26,7 @@
 		youTubeDataApiController.zipCode;
 		youTubeDataApiController.videos;
 
-		youTubeDataApiController.video;
+		youTubeDataApiController.video = {};
 
 		/*
 		 * Called external to Angular
@@ -72,6 +73,11 @@
 				//TODO: faster, simpler, and easier than pulling in iframe_api.  However, look at using a custom directive or ng-bind-html
 				// Manipulating the DOM within an Angular controller using jQuery, hand slap.
 				$('#video-player').html(youTubeDataApiController.video.player.embedHtml);
+			});
+
+			videoService.comments(videoId)
+			.then(function(response){
+				youTubeDataApiController.video.comments = response.comments || 'No comments for this video';
 			});
 		};
 
