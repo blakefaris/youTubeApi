@@ -77,7 +77,7 @@
 
 			videoService.comments(videoId)
 			.then(function(response){
-				youTubeDataApiController.video.comments = response.comments || 'No comments for this video';
+				youTubeDataApiController.video.comments = response.comments;
 			});
 		};
 

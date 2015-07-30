@@ -45,7 +45,7 @@
 
 			request.execute(function(response) {
 				deferred.resolve({
-					comments: response.items ? response.items[0] : null
+					comments: response.items
 				});
 			});
 			

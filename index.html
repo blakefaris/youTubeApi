@@ -74,12 +74,15 @@
 
 				<div id="video-comments" class="video-comments">
 					<div><strong>Comments:</strong></div>
-					<p>
-						{{youTubeDataApiController.video.comments}}
-						<span ng-show="!youTubeDataApiController.video.comments">
-							<i class="fa fa-spinner fa-spin"></i> Hang tight, still loading those important comments
-						</span>
+					<p ng-repeat="comment in youTubeDataApiController.video.comments">
+						{{comment.snippet.topLevelComment.snippet.textDisplay}}
 					</p>
+					<p ng-show="youTubeDataApiController.video.comments.length == 0">
+						No comments for this video.
+					</p>						
+					<span ng-show="!youTubeDataApiController.video.comments">
+						<i class="fa fa-spinner fa-spin"></i> Hang tight, still loading those important comments
+					</span>
 				</div>
 			</div>
 
