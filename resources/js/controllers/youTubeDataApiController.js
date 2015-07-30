@@ -22,10 +22,12 @@
 		var youTubeDataApiController = this;
 
 		function activate() {
+			youTubeDataApiController.isPlaylistProcessing = true;
 			playlistService.get()
 			.then(function(response){
 				youTubeDataApiController.playlists = response.playlists;
 				youTubeDataApiController.selectedPlaylistId = response.playlists ? response.playlists[0].id : null;
+				youTubeDataApiController.isPlaylistProcessing = false;
 			});
 		}
 
@@ -40,9 +42,11 @@
 
 		youTubeDataApiController.video = {};
 
+		youTubeDataApiController.isPlaylistProcessing = true;
 		youTubeDataApiController.newPlaylistTitle;
 		youTubeDataApiController.playlists;
 		youTubeDataApiController.selectedPlaylistId;
+		youTubeDataApiController.playlistVideos;
 
 		/*
 		 * Called external to Angular
@@ -79,6 +83,7 @@
 			});
 		};
 
+		// TODO: Video functions, future extraction
 		$scope.play = function(videoId) {
 			videoService.details({
 				videoId: videoId
@@ -99,6 +104,7 @@
 			});
 		};
 
+		// TODO: Playlist functions, future extraction
 		$scope.addPlaylist = function() {
 			playlistService.add({
 				title: youTubeDataApiController.newPlaylistTitle
@@ -119,6 +125,16 @@
 			.then(function(response){
 				// TODO: display success message
 				console.log(response);
+			});
+		};
+
+		$scope.showPlaylist = function(playlistId) {
+			playlistItemsService.get({
+				playlistId:playlistId
+			})
+			.then(function(response){
+				// TODO: marshall response into same object that is used for search results
+				youTubeDataApiController.playlistVideos = response.videos;
 			});
 		};
 

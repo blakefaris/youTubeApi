@@ -25,7 +25,7 @@
 
 			request.execute(function(response) {
 				deferred.resolve({
-					playlists: response.items
+					videos: response.items
 				});
 			});
 			
