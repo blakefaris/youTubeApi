@@ -7,15 +7,27 @@
 		'authService',
 		'searchService',
 		'videoService',
+		'playlistService',
+		'playlistItemsService',
 		function(
 			$scope, 
 			$timeout, 
 			authService,
 			searchService,
-			videoService) {
+			videoService,
+			playlistService,
+			playlistItemsService) {
 
 		// assign context
 		var youTubeDataApiController = this;
+
+		function activate() {
+			playlistService.get()
+			.then(function(response){
+				youTubeDataApiController.playlists = response.playlists;
+				youTubeDataApiController.selectedPlaylistId = response.playlists ? response.playlists[0].id : null;
+			});
+		}
 
 		youTubeDataApiController.isAuthorized = false;
 		youTubeDataApiController.isSearchDisabled = true;
@@ -28,6 +40,10 @@
 
 		youTubeDataApiController.video = {};
 
+		youTubeDataApiController.newPlaylistTitle;
+		youTubeDataApiController.playlists;
+		youTubeDataApiController.selectedPlaylistId;
+
 		/*
 		 * Called external to Angular
 		 */
@@ -37,9 +53,7 @@
 				youTubeDataApiController.isSearchDisabled = !response.authenticated;	
 				youTubeDataApiController.isAuthorized = response.authenticated;
 
-				// TODO: Yikes, calling global functions. This will be solved with Angular services
-				// requestUserLikesPlaylistId();
-				requestUserPlaylists();
+				activate();
 			});
 
 			// Wo wo wo, gross, this is happening because this method is called by googleApiClientReady which is on the global namespace and out of Angular's environment.
@@ -66,7 +80,9 @@
 		};
 
 		$scope.play = function(videoId) {
-			videoService.details(videoId)
+			videoService.details({
+				videoId: videoId
+			})
 			.then(function(response){
 				youTubeDataApiController.video = response.video;
 
@@ -75,9 +91,34 @@
 				$('#video-player').html(youTubeDataApiController.video.player.embedHtml);
 			});
 
-			videoService.comments(videoId)
+			videoService.comments({
+				videoId: videoId
+			})
 			.then(function(response){
 				youTubeDataApiController.video.comments = response.comments;
+			});
+		};
+
+		$scope.addPlaylist = function() {
+			playlistService.add({
+				title: youTubeDataApiController.newPlaylistTitle
+			})
+			.then(function(response){
+				// TODO: handle error and success messages
+				if (!response.error) {
+					youTubeDataApiController.playlists.push(response);
+				}
+			});
+		};
+
+		$scope.addToPlaylist = function(videoId) {
+			playlistItemsService.add({
+				videoId: videoId,
+				playlistId: youTubeDataApiController.selectedPlaylistId
+			})
+			.then(function(response){
+				// TODO: display success message
+				console.log(response);
 			});
 		};
 

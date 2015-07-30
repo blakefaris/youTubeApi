@@ -6,12 +6,15 @@
 		<link rel="stylesheet" href="/resources/stylesheets/external/bootstrap-3.3.5.min.css">
 		<link rel="stylesheet" href="/resources/stylesheets/oneAndOnlyStyleSheet.css">
 
+		<!-- combine and minify before releasing to production -->
 		<script src="/resources/js/external/angular-1.4.3.min.js"></script>
 		<script src="/resources/js/app.js"></script>
 		<script src="/resources/js/services/authService.js"></script>
 		<script src="/resources/js/services/searchService.js"></script>
 		<script src="/resources/js/services/videoService.js"></script>
 		<script src="/resources/js/services/zipCodeService.js"></script>
+		<script src="/resources/js/services/playlistService.js"></script>
+		<script src="/resources/js/services/playlistItemsService.js"></script>
 		<script src="/resources/js/controllers/youTubeDataApiController.js"></script>
 	</head>
 	<body ng-controller="YouTubeDataApiController as youTubeDataApiController">
@@ -47,16 +50,25 @@
 				</div>
 			</form>
 
-			<div id="playlists">
-				<strong>Playlists:</strong>
-				<span id="playlists-container">
-					<i class="fa fa-spinner fa-spin"></i> Hang tight, looking to see if you have any playlists
-				</span>
-			</div>
-
 			<div id="video-selected" class="video-selected" ng-show="youTubeDataApiController.video.snippet">
 				<div id="video-player" class="video-player"></div>
 
+				<!-- TODO: canidate for a directive -->
+				<div id="playlists">
+					<form class="form-inline">
+						<div class="form-group">
+							<input id="playlist-add" type="text" placeholder="New playlist title" class="form-control" ng-model="youTubeDataApiController.newPlaylistTitle"> 
+							<button id="playlist-add-button" class="btn btn-default" ng-click="addPlaylist()">Add</button>
+						</div>
+						<div class="form-group">
+							<label>Playlist
+							<select ng-model="youTubeDataApiController.selectedPlaylistId" ng-options="playlist.id as playlist.snippet.title for playlist in youTubeDataApiController.playlists"></select>
+							<button class="btn btn-default btn-xs" ng-click="addToPlaylist(youTubeDataApiController.video.id)">Add to selected playlist</button> 
+						</div>
+					</form>
+				</div>
+
+				<!-- TODO: canidate for a directive -->
 				<div id="video-details" class="video-details">
 					<div class="row video-details-row">
 						<div class="col-sm-2"><strong>Title:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.snippet.title}}</div>
@@ -72,6 +84,7 @@
 					</div>
 				</div>
 
+				<!-- TODO: canidate for a directive -->
 				<div id="video-comments" class="video-comments">
 					<div><strong>Comments:</strong></div>
 					<p ng-repeat="comment in youTubeDataApiController.video.comments">
@@ -86,6 +99,7 @@
 				</div>
 			</div>
 
+			<!-- TODO: canidate for a directive -->
 			<div ng-show="youTubeDataApiController.videos">
 				<h2>Videos</h2>
 				<form class="form-inline">
@@ -115,10 +129,7 @@
 			</div>
 		</footer>
 
-		<!-- combine and minify before releasing to production -->
 		<script src="/resources/js/external/jquery-1.11.3.min.js"></script>
-		<script src="/resources/js/playLists.js"></script>
-		<script src="/resources/js/playlistItems.js"></script>
 		<script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 	</body>
 </html>

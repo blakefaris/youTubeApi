@@ -9,7 +9,7 @@
 		/*
 		 * Perform a search using YouTube Data API.
 		 *
-		 * Params:
+		 * params:
 		 {
 			keywords: 	String containing keywords to search for
 			order: 		(optional) String with possible values of date, rating, relevance),

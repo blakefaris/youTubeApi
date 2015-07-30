@@ -9,14 +9,16 @@
 		/*
 		 * Get details for a video using YouTube Data API.
 		 *
-		 * Params:
+		 * params:
+		 {
 		 	videoId: String Video ID to get details for
+		 }
 		 */
-		videoService.details = function(videoId) {
+		videoService.details = function(params) {
 			var deferred = $q.defer();
 
 			var request = gapi.client.youtube.videos.list({
-				id: videoId,
+				id: params.videoId,
 				part: 'snippet,statistics,player'
 			});
 
@@ -32,14 +34,16 @@
 		/*
 		 * Get comments for a video using YouTube Data API.
 		 *
-		 * Params:
+		 * params:
+		 {
 		 	videoId: String Video ID to get comments for
+		 }
 		 */
-		videoService.comments = function(videoId) {
+		videoService.comments = function(params) {
 			var deferred = $q.defer();
 
 			var request = gapi.client.youtube.commentThreads.list({
-				videoId: videoId,
+				videoId: params.videoId,
 				part: 'snippet'
 			});
 
