@@ -11,6 +11,7 @@
 		<script src="/resources/js/services/authService.js"></script>
 		<script src="/resources/js/services/searchService.js"></script>
 		<script src="/resources/js/services/videoService.js"></script>
+		<script src="/resources/js/services/zipCodeService.js"></script>
 		<script src="/resources/js/controllers/youTubeDataApiController.js"></script>
 	</head>
 	<body ng-controller="YouTubeDataApiController as youTubeDataApiController">
@@ -32,14 +33,17 @@
 			</p>
 
 			<form class="form-inline">
-				<strong>Sort by:</strong>
-				<select ng-model="youTubeDataApiController.sortBy">
-					<option value="relevance">Relevance</option>
-					<option value="date">Date</option>
-					<option value="rating">Rating</option>
-				</select>
+				<label>
+					<strong>Sort by:</strong>
+					<select ng-model="youTubeDataApiController.sortBy">
+						<option value="relevance">Relevance</option>
+						<option value="date">Date</option>
+						<option value="rating">Rating</option>
+					</select>
+				</label>
 				<div class="form-group">
-					<input id="query" type="text" class="form-control" ng-model="youTubeDataApiController.keywords"> <button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
+					<input id="query" type="text" class="form-control" ng-model="youTubeDataApiController.keywords"> 
+					<button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
 				</div>
 			</form>
 
@@ -71,15 +75,23 @@
 				<div id="video-comments"></div>
 			</div>
 
-			<h3>Videos</h3>
-			<ul class="video-list list-unstyled">
-				<li class="video-list-item" ng-repeat="video in youTubeDataApiController.videos">
-					<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.id.videoId)">
-						<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
-						<strong>{{video.snippet.title}}</strong>
-					</a>
-				</li>
-			</ul>
+			<div ng-show="youTubeDataApiController.videos">
+				<h3>Videos</h3>
+				<form class="form-inline">
+					<input id="zipCode" type="text" placeholder="Filter by ZIP code" class="form-control" ng-model="youTubeDataApiController.zipCode"> 
+					<button id="filter-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Filter</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
+				</form>
+
+				<ul class="video-list list-unstyled">
+					<li class="video-list-item" ng-repeat="video in youTubeDataApiController.videos">
+						<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.id.videoId)">
+							<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
+							<strong>{{video.snippet.title}}</strong>
+						</a>
+					</li>
+				</ul>
+			</div>
+
 		</main>
 
 		<footer>

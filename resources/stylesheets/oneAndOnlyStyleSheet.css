@@ -53,10 +53,15 @@ footer {
 
 .video-list {
 	background-color: #fff;
+	border: 1px solid #ccc;
+	margin-top: 10px;
 }
 
 .video-list-item {
 	border-top: 1px solid #ccc;
-	margin-top: 10px;
-	padding-top: 10px;
+	padding: 10px;
+}
+
+.video-list-item:first-child {
+	border: none;
 }

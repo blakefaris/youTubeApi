@@ -22,7 +22,8 @@
 
 		youTubeDataApiController.keywords = '';
 		youTubeDataApiController.sortBy = 'relevance';
-		youTubeDataApiController.videos = [];
+		youTubeDataApiController.zipCode;
+		youTubeDataApiController.videos;
 
 		youTubeDataApiController.video;
 
@@ -51,7 +52,8 @@
 
 			return searchService.search({
 				keywords: youTubeDataApiController.keywords,
-				order: youTubeDataApiController.sortBy
+				order: youTubeDataApiController.sortBy,
+				zipCode: youTubeDataApiController.zipCode
 			})
 			.then(function(response){
 				youTubeDataApiController.videos = response.videos;

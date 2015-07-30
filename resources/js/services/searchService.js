@@ -1,5 +1,5 @@
 (function () {
-	angular.module('youTubeDataApiApp').factory('searchService', ['$q', function($q) {
+	angular.module('youTubeDataApiApp').factory('searchService', ['$q', 'zipCodeService', function($q, zipCodeService) {
 
 		// assign context
 		var searchService = this;
@@ -11,25 +11,32 @@
 		 *
 		 * Params:
 		 {
-			keywords: String containing keywords to search for
-			order: (optional) String with possible values of date, rating, relevance)
+			keywords: 	String containing keywords to search for
+			order: 		(optional) String with possible values of date, rating, relevance),
+			zipCode: 	(optional) int 5 digit zip code, if a lat/long is not found for it, it is ignored.
 		 }
 		 */
 		searchService.search = function(params) {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.search.list({
+			var location = zipCodeService[params.zipCode];
+
+			var searchParams = {
 				q: params.keywords,
 				part: 'snippet',
 				order: params.order || 'relevance',
-				//pageToken: nextPageToken prevPageToken
 				type: 'video',
 				videoEmbeddable: true,
 				videoSyndicated: true, 
 				maxResults: 10
-			});
+			};
 
-			request.execute(function(response) {
+			if (location) {
+				searchParams.location = location;
+				searchParams.locationRadius = '50mi';
+			}
+
+			gapi.client.youtube.search.list(searchParams).execute(function(response) {
 				deferred.resolve({
 					videos: response.items
 				});
