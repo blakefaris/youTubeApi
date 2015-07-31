@@ -1,7 +1,7 @@
 (function () {
 	angular.module('youTubeDataApiApp')
 	// TODO: this name is way too long, its making the index.html crazy
-	.controller('YouTubeDataApiController', 
+	.controller('PageController', 
 		['$scope', 
 		'$timeout', 
 		'authService',
@@ -19,34 +19,34 @@
 			playlistItemsService) {
 
 		// assign context
-		var youTubeDataApiController = this;
+		var pageController = this;
 
 		function activate() {
-			youTubeDataApiController.isPlaylistProcessing = true;
+			pageController.isPlaylistProcessing = true;
 			playlistService.get()
 			.then(function(response){
-				youTubeDataApiController.playlists = response.playlists;
-				youTubeDataApiController.selectedPlaylistId = response.playlists ? response.playlists[0].id : null;
-				youTubeDataApiController.isPlaylistProcessing = false;
+				pageController.playlists = response.playlists;
+				pageController.selectedPlaylistId = response.playlists ? response.playlists[0].id : null;
+				pageController.isPlaylistProcessing = false;
 			});
 		}
 
-		youTubeDataApiController.isAuthorized = false;
-		youTubeDataApiController.isSearchDisabled = true;
-		youTubeDataApiController.isSearchProcessing = false;
+		pageController.isAuthorized = false;
+		pageController.isSearchDisabled = true;
+		pageController.isSearchProcessing = false;
 
-		youTubeDataApiController.keywords = '';
-		youTubeDataApiController.sortBy = 'relevance';
-		youTubeDataApiController.zipCode;
-		youTubeDataApiController.videos;
+		pageController.keywords = '';
+		pageController.sortBy = 'relevance';
+		pageController.zipCode;
+		pageController.videos;
 
-		youTubeDataApiController.video = {};
+		pageController.video = {};
 
-		youTubeDataApiController.isPlaylistProcessing = true;
-		youTubeDataApiController.newPlaylistTitle;
-		youTubeDataApiController.playlists;
-		youTubeDataApiController.selectedPlaylistId;
-		youTubeDataApiController.playlistVideos;
+		pageController.isPlaylistProcessing = true;
+		pageController.newPlaylistTitle;
+		pageController.playlists;
+		pageController.selectedPlaylistId;
+		pageController.playlistVideos;
 
 		/*
 		 * Called external to Angular
@@ -54,8 +54,8 @@
 		$scope.authorize = function() {
 			authService.authorize()
 			.then(function(response){
-				youTubeDataApiController.isSearchDisabled = !response.authenticated;	
-				youTubeDataApiController.isAuthorized = response.authenticated;
+				pageController.isSearchDisabled = !response.authenticated;	
+				pageController.isAuthorized = response.authenticated;
 
 				activate();
 			});
@@ -66,20 +66,20 @@
 		};
 
 		$scope.search = function() {
-			youTubeDataApiController.isSearchDisabled = true;
-			youTubeDataApiController.isSearchProcessing = true;
+			pageController.isSearchDisabled = true;
+			pageController.isSearchProcessing = true;
 
 			return searchService.search({
-				keywords: youTubeDataApiController.keywords,
-				order: youTubeDataApiController.sortBy,
-				zipCode: youTubeDataApiController.zipCode
+				keywords: pageController.keywords,
+				order: pageController.sortBy,
+				zipCode: pageController.zipCode
 			})
 			.then(function(response){
-				youTubeDataApiController.videos = response.videos;
+				pageController.videos = response.videos;
 			})
 			.finally(function(){
-				youTubeDataApiController.isSearchDisabled = false;
-				youTubeDataApiController.isSearchProcessing = false;
+				pageController.isSearchDisabled = false;
+				pageController.isSearchProcessing = false;
 			});
 		};
 
@@ -89,30 +89,30 @@
 				videoId: videoId
 			})
 			.then(function(response){
-				youTubeDataApiController.video = response.video;
+				pageController.video = response.video;
 
 				//TODO: faster, simpler, and easier than pulling in iframe_api.  However, look at using a custom directive or ng-bind-html
 				// Manipulating the DOM within an Angular controller using jQuery, hand slap.
-				$('#video-player').html(youTubeDataApiController.video.player.embedHtml);
+				$('#video-player').html(pageController.video.player.embedHtml);
 			});
 
 			videoService.comments({
 				videoId: videoId
 			})
 			.then(function(response){
-				youTubeDataApiController.video.comments = response.comments;
+				pageController.video.comments = response.comments;
 			});
 		};
 
 		// TODO: Playlist functions, future extraction
 		$scope.addPlaylist = function() {
 			playlistService.add({
-				title: youTubeDataApiController.newPlaylistTitle
+				title: pageController.newPlaylistTitle
 			})
 			.then(function(response){
 				// TODO: handle error and success messages
 				if (!response.error) {
-					youTubeDataApiController.playlists.push(response);
+					pageController.playlists.push(response);
 				}
 			});
 		};
@@ -120,7 +120,7 @@
 		$scope.addToPlaylist = function(videoId) {
 			playlistItemsService.add({
 				videoId: videoId,
-				playlistId: youTubeDataApiController.selectedPlaylistId
+				playlistId: pageController.selectedPlaylistId
 			})
 			.then(function(response){
 				// TODO: display success message
@@ -135,7 +135,7 @@
 				})
 				.then(function(response){
 					if (response.success) {
-						youTubeDataApiController.playlistVideos.splice(video, 1);
+						pageController.playlistVideos.splice(video, 1);
 					}
 				});
 			}
@@ -147,7 +147,7 @@
 			})
 			.then(function(response){
 				// TODO: marshall response into same object that is used for search results
-				youTubeDataApiController.playlistVideos = response.videos;
+				pageController.playlistVideos = response.videos;
 			});
 		};
 
