@@ -30,114 +30,135 @@
 		</header>
 
 		<main>
-			<h1>Welcome</h1>
-			<p>
-				This is a single page web app in which I will be using the <a href="https://developers.google.com/youtube/v3/docs">YouTube Data API</a> for a demo.
-			</p>
 
-			<form class="form-inline">
-				<label>
-					<strong>Sort by:</strong>
-					<select ng-model="youTubeDataApiController.sortBy">
-						<option value="relevance">Relevance</option>
-						<option value="date">Date</option>
-						<option value="rating">Rating</option>
-					</select>
-				</label>
-				<div class="form-group">
-					<input id="query" type="text" class="form-control" ng-model="youTubeDataApiController.keywords"> 
-					<button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
+			<div class="row">
+
+				<div class="col-sm-8">
+					<h1>Welcome</h1>
+					<p>
+						This is a single page web app in which I will be using the <a href="https://developers.google.com/youtube/v3/docs">YouTube Data API</a> for a demo.
+					</p>
+
+					<form class="form-inline">
+						<label>
+							<strong>Sort by:</strong>
+							<select ng-model="youTubeDataApiController.sortBy">
+								<option value="relevance">Relevance</option>
+								<option value="date">Date</option>
+								<option value="rating">Rating</option>
+							</select>
+						</label>
+						<div class="form-group">
+							<input id="query" type="text" class="form-control" ng-model="youTubeDataApiController.keywords"> 
+							<button id="search-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Search</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
+						</div>
+					</form>
+
+					<div id="video-selected" class="video-selected" ng-show="youTubeDataApiController.video.snippet">
+						<div id="video-player" class="video-player"></div>
+
+						<!-- TODO: canidate for a directive -->
+						<div id="playlists">
+							<form class="form-inline">
+								<div class="form-group">
+									<label>Playlist
+									<select ng-model="youTubeDataApiController.selectedPlaylistId" ng-options="playlist.id as playlist.snippet.title for playlist in youTubeDataApiController.playlists"></select>
+									<button class="btn btn-default btn-xs" ng-click="addToPlaylist(youTubeDataApiController.video.id)">Add to selected playlist</button> 
+								</div>
+							</form>
+						</div>
+
+						<!-- TODO: canidate for a directive -->
+						<div id="video-details" class="video-details">
+							<div class="row video-details-row">
+								<div class="col-sm-2"><strong>Title:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.snippet.title}}</div>
+							</div>
+							<div class="row video-details-row">
+								<div class="col-sm-2"><strong>Channel:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.snippet.channelTitle}}</div>
+							</div>
+							<div class="row video-details-row">
+								<div class="col-sm-2"><strong>Likes:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.statistics.likeCount}}</div>
+							</div>
+							<div class="row video-details-row">
+								<div class="col-sm-2"><strong>Dislikes:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.statistics.dislikeCount}}</div>
+							</div>
+						</div>
+
+						<!-- TODO: canidate for a directive -->
+						<div id="video-comments" class="video-comments">
+							<div><strong>Comments:</strong></div>
+							<p ng-repeat="comment in youTubeDataApiController.video.comments">
+								{{comment.snippet.topLevelComment.snippet.textDisplay}}
+							</p>
+							<p ng-show="youTubeDataApiController.video.comments.length == 0">
+								No comments for this video.
+							</p>						
+							<span ng-show="!youTubeDataApiController.video.comments">
+								<i class="fa fa-spinner fa-spin"></i> Hang tight, still loading those important comments
+							</span>
+						</div>
+					</div>
+
+					<!-- TODO: canidate for a directive -->
+					<div ng-show="youTubeDataApiController.videos">
+						<h2>Search Results</h2>
+						<form class="form-inline">
+							<input id="zipCode" type="text" placeholder="Filter by ZIP code" class="form-control" ng-model="youTubeDataApiController.zipCode"> 
+							<button id="filter-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Filter</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
+						</form>
+
+						<ul class="video-list list-unstyled">
+							<li class="video-list-item" ng-repeat="video in youTubeDataApiController.videos">
+								<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.id.videoId)">
+									<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
+									<strong>{{video.snippet.title}}</strong>
+								</a>
+							</li>
+						</ul>
+					</div>
 				</div>
-			</form>
-
-			<div class="playlists-list">
-				<strong>Playlists:</strong> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isPlaylistProcessing"></i>
-				<span ng-repeat="playlist in youTubeDataApiController.playlists" ng-show="youTubeDataApiController.playlists">
-					<button title="View movies in {{playlist.snippet.title}}" class="btn btn-default btn-xs" ng-click="showPlaylist(playlist.id)">{{playlist.snippet.title}}</button>
-				</span>
-				<!-- TODO: so no playlist message, offer ability to add here? -->
-			</div>
-
-			<div id="video-selected" class="video-selected" ng-show="youTubeDataApiController.video.snippet">
-				<div id="video-player" class="video-player"></div>
-
-				<!-- TODO: canidate for a directive -->
-				<div id="playlists">
+				<div class="col-sm-4">
+					<h2>Your Playlists</h2>
 					<form class="form-inline">
 						<div class="form-group">
 							<input id="playlist-add" type="text" placeholder="New playlist title" class="form-control" ng-model="youTubeDataApiController.newPlaylistTitle"> 
-							<button id="playlist-add-button" class="btn btn-default" ng-click="addPlaylist()">Add</button>
-						</div>
-						<div class="form-group">
-							<label>Playlist
-							<select ng-model="youTubeDataApiController.selectedPlaylistId" ng-options="playlist.id as playlist.snippet.title for playlist in youTubeDataApiController.playlists"></select>
-							<button class="btn btn-default btn-xs" ng-click="addToPlaylist(youTubeDataApiController.video.id)">Add to selected playlist</button> 
+							<button id="playlist-add-button" class="btn btn-primary" ng-click="addPlaylist()">Add</button>
 						</div>
 					</form>
+
+					<div class="playlists-list">
+						<strong>Playlists:</strong> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isPlaylistProcessing"></i>
+						<span ng-repeat="playlist in youTubeDataApiController.playlists" ng-show="youTubeDataApiController.playlists">
+							<button title="View movies in {{playlist.snippet.title}}" class="btn btn-default btn-xs" ng-click="showPlaylist(playlist.id)">{{playlist.snippet.title}}</button>
+						</span>
+						<!-- TODO: so no playlist message, offer ability to add here? -->
+					</div>
+
+					<!-- TODO: canidate for a directive -->
+					<div ng-show="youTubeDataApiController.playlistVideos">
+						<h2>Playlist Videos</h2>
+						<ul class="video-list list-unstyled">
+							<li class="video-list-item row" ng-repeat="video in youTubeDataApiController.playlistVideos">
+								<div class="col-lg-4 col-xs-12">
+									<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.snippet.resourceId.videoId)"><img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" /></a>
+								</div>
+								<div class="col-lg-8 col-xs-12">
+									<div class="row">
+										<div class="col-md-8 col-xs-12">
+											<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.snippet.resourceId.videoId)"><strong>{{video.snippet.title}}</strong></a>
+										</div>
+										<div class="col-md-4 col-xs-12 text-right">
+											<button title="Remove {{video.snippet.title}} from playlist" class="video-remove btn btn-danger btn-xs" ng-click="removeFromPlaylist(video)"><i class="fa fa-times"></i> Remove</button>
+										</div>
+									</div>
+								</div>
+							</li>
+						</ul>
+						<div ng-if="youTubeDataApiController.playlistVideos.length == 0">
+							Selected playlist has no videos.
+						</div>
+					</div>
 				</div>
-
-				<!-- TODO: canidate for a directive -->
-				<div id="video-details" class="video-details">
-					<div class="row video-details-row">
-						<div class="col-sm-2"><strong>Title:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.snippet.title}}</div>
-					</div>
-					<div class="row video-details-row">
-						<div class="col-sm-2"><strong>Channel:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.snippet.channelTitle}}</div>
-					</div>
-					<div class="row video-details-row">
-						<div class="col-sm-2"><strong>Likes:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.statistics.likeCount}}</div>
-					</div>
-					<div class="row video-details-row">
-						<div class="col-sm-2"><strong>Dislikes:</strong></div><div class="col-sm-10">{{youTubeDataApiController.video.statistics.dislikeCount}}</div>
-					</div>
-				</div>
-
-				<!-- TODO: canidate for a directive -->
-				<div id="video-comments" class="video-comments">
-					<div><strong>Comments:</strong></div>
-					<p ng-repeat="comment in youTubeDataApiController.video.comments">
-						{{comment.snippet.topLevelComment.snippet.textDisplay}}
-					</p>
-					<p ng-show="youTubeDataApiController.video.comments.length == 0">
-						No comments for this video.
-					</p>						
-					<span ng-show="!youTubeDataApiController.video.comments">
-						<i class="fa fa-spinner fa-spin"></i> Hang tight, still loading those important comments
-					</span>
-				</div>
-			</div>
-
-			<!-- TODO: canidate for a directive -->
-			<div ng-show="youTubeDataApiController.playlistVideos">
-				<h2>Playlist Videos</h2>
-				<ul class="video-list list-unstyled">
-					<li class="video-list-item" ng-repeat="video in youTubeDataApiController.playlistVideos">
-						<!-- TODO pretty annoying that the video responses differ between playlists and search results -->
-						<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.snippet.resourceId.videoId)">
-							<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
-							<strong>{{video.snippet.title}}</strong>
-						</a>
-						<button class="btn btn-danger btn-xs" ng-click="removeFromPlaylist(video)">Remove</button>
-					</li>
-				</ul>
-			</div>
-
-			<!-- TODO: canidate for a directive -->
-			<div ng-show="youTubeDataApiController.videos">
-				<h2>Search Results</h2>
-				<form class="form-inline">
-					<input id="zipCode" type="text" placeholder="Filter by ZIP code" class="form-control" ng-model="youTubeDataApiController.zipCode"> 
-					<button id="filter-button" class="btn btn-primary disabled" ng-class="{'disabled': youTubeDataApiController.isSearchDisabled}" disabled ng-disabled="youTubeDataApiController.isSearchDisabled" ng-click="search()">Filter</button> <i class="fa fa-spinner fa-spin" ng-show="youTubeDataApiController.isSearchProcessing"></i>
-				</form>
-
-				<ul class="video-list list-unstyled">
-					<li class="video-list-item" ng-repeat="video in youTubeDataApiController.videos">
-						<a href="#" title="Play {{video.snippet.title}}" ng-click="play(video.id.videoId)">
-							<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
-							<strong>{{video.snippet.title}}</strong>
-						</a>
-					</li>
-				</ul>
 			</div>
 
 		</main>
