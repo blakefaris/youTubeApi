@@ -38,7 +38,7 @@
 		 * params:
 		 {
 		 	playlistId: String Playlist ID for the playlist that will have the video added to it
-		 	videoId: 	String Video ID to get comments for
+		 	videoId: 	String Video ID of the video to add
 		 }
 		 */
 		playlistItemsService.add = function(params) {
@@ -47,12 +47,37 @@
 			var request = gapi.client.youtube.playlistItems.insert({
 				part: 'snippet',
 				snippet: {
-					playlistId: params.playlistId, //"PLptZervfufLygIYkIEfy_yv4ylYwRNJBOddddd",
+					playlistId: params.playlistId,
 					resourceId: {
 						kind: "youtube#video",
-						videoId: params.videoId //"DxhUJmzTzps"
+						videoId: params.videoId
 					}
 				}
+			});
+
+			request.execute(function(response) {
+				deferred.resolve({
+					success: !response.error,
+					message: response.error ? response.error.message : ''
+				});
+			});
+			
+			return deferred.promise;
+		};
+
+		/*
+		 * Remove a video to a playlist.
+		 *
+		 * params:
+		 {
+		 	playlistItemId: String vidoe's unque ID for playlists
+		 }
+		 */
+		playlistItemsService.remove = function(params) {
+			var deferred = $q.defer();
+
+			var request = gapi.client.youtube.playlistItems.delete({
+				id: params.playlistItemId
 			});
 
 			request.execute(function(response) {

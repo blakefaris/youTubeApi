@@ -117,6 +117,7 @@
 							<img ng-src="{{video.snippet.thumbnails.default.url}}" alt="Thumbnail" />
 							<strong>{{video.snippet.title}}</strong>
 						</a>
+						<button class="btn btn-danger btn-xs" ng-click="removeFromPlaylist(video)">Remove</button>
 					</li>
 				</ul>
 			</div>

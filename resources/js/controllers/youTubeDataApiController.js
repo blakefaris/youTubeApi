@@ -128,6 +128,17 @@
 			});
 		};
 
+		$scope.removeFromPlaylist = function(video) {
+			playlistItemsService.remove({
+				playlistItemId: video.id
+			})
+			.then(function(response){
+				if (response.success) {
+					youTubeDataApiController.playlistVideos.splice(video, 1);
+				}
+			});
+		};
+
 		$scope.showPlaylist = function(playlistId) {
 			playlistItemsService.get({
 				playlistId:playlistId
