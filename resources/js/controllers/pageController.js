@@ -1,6 +1,5 @@
 (function () {
 	angular.module('youTubeDataApiApp')
-	// TODO: this name is way too long, its making the index.html crazy
 	.controller('PageController', 
 		['$scope', 
 		'$timeout', 
