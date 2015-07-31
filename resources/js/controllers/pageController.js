@@ -135,7 +135,10 @@
 				})
 				.then(function(response){
 					if (response.success) {
-						pageController.playlistVideos.splice(video, 1);
+						var index = pageController.playlistVideos.indexOf(video);
+						if (index != -1) {
+							pageController.playlistVideos.splice(index, 1);
+						}
 					}
 				});
 			}
