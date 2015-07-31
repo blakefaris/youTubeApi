@@ -20,11 +20,11 @@
 	<body ng-controller="PageController as pageController">
 
 		<header>
-			<p id="sign-in-container" class="hidden">
-				<a href="#" id="sign-in" title="Sign into your Google account"><span class="fa fa-sign-in"></span> Sign In</a>
-				<a href="#" id="sign-out" title="Sign out of your Google account"><span class="fa fa-sign-out"></span> Sign Out</a>
+			<p id="sign-in-container" ng-show="!pageController.isAuthorizing">
+				<a href="#" id="sign-in" title="Sign into your Google account" ng-show="!pageController.isAuthorized" ng-click="signIn()"><span class="fa fa-sign-in"></span> Sign In</a>
+				<a href="#" id="sign-out" title="Sign out of your Google account" ng-show="pageController.isAuthorized" ng-click="signOut()"><span class="fa fa-sign-out"></span> Sign Out</a>
 			</p>
-			<p id="sign-in-loading">
+			<p id="sign-in-loading" ng-show="pageController.isAuthorizing">
 				<i class="fa fa-spinner fa-spin"></i> Hang tight
 			</p>
 		</header>

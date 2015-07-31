@@ -34,40 +34,9 @@
 			gapi.auth.authorize({
 				client_id: OAUTH2_CLIENT_ID,
 				scope: OAUTH2_SCOPES,
-				immediate: true
-			}, handleAuthResult);
-		}
-
-		// Handle the result of a gapi.auth.authorize() call.
-		function handleAuthResult(authResult) {
-			if (authResult && !authResult.error) {
-				// TODO: remove jQuery selectors and events, use Angular
-				// Authorization was successful. Hide authorization prompts and show content that should be visible after authorization succeeds.
-				$('#sign-in').hide();
-				$('#sign-out').show()
-				.click(function(){    
-					// NOTE: bpef: added hacky logout logic  
-					var currentUrl = window.location.href;
-					window.location.href = "https://accounts.google.com/logout?continue=https://appengine.google.com/_ah/logout?continue="+currentUrl;
-				});
-				loadAPIClientInterfaces();
-			} else {
-				// Attempt a non-immediate OAuth 2.0 client flow. The current function is called when that flow completes.
-				$('#sign-out').hide();
-				$('#sign-in').show()
-				.click(function() {
-					gapi.auth.authorize({
-						client_id: OAUTH2_CLIENT_ID,
-						scope: OAUTH2_SCOPES,
-						immediate: false,
-						cookie_policy: 'single_host_origin'
-					}, function(){
-						window.location.reload();
-					});
-				});
-			}
-			$('#sign-in-container').removeClass('hidden');
-			$('#sign-in-loading').hide();
+				immediate: true,
+				// cookie_policy: 'single_host_origin'
+			}, loadAPIClientInterfaces);
 		}
 
 		/*
@@ -75,11 +44,11 @@
 		are required to use the Google APIs JS client. More info is available at
 		http://code.google.com/p/google-api-javascript-client/wiki/GettingStarted#Loading_the_Client
 		*/
-		function loadAPIClientInterfaces() {
-			gapi.client.load('youtube', 'v3', function(){
+		function loadAPIClientInterfaces(response) {
+			gapi.client.load('youtube', 'v3')
+			.then(function(){
 				deferred.resolve({
-					// TODO: handle user not authenticated
-					authenticated: true
+					authenticated: response && !response.error
 				});
 			});
 		}
@@ -89,6 +58,22 @@
 		authService.authorize = function() {
 			gapi.auth.init(checkAuth);
 			return deferred.promise;
+		};
+
+		authService.signIn = function() {
+			gapi.auth.authorize({
+				client_id: OAUTH2_CLIENT_ID,
+				scope: OAUTH2_SCOPES,
+				immediate: false,
+				cookie_policy: 'single_host_origin'
+			}, function(){
+				window.location.reload();
+			});
+		};
+
+		authService.signOut = function() {
+			var currentUrl = window.location.href;
+			window.location.href = "https://accounts.google.com/logout?continue=https://appengine.google.com/_ah/logout?continue="+currentUrl;
 		};
 
 		return authService;

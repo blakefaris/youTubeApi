@@ -30,6 +30,7 @@
 			});
 		}
 
+		pageController.isAuthorizing = true;
 		pageController.isAuthorized = false;
 		pageController.isSearchDisabled = true;
 		pageController.isSearchProcessing = false;
@@ -55,13 +56,25 @@
 			.then(function(response){
 				pageController.isSearchDisabled = !response.authenticated;	
 				pageController.isAuthorized = response.authenticated;
+				pageController.isAuthorizing = false;
 
-				activate();
+				if (pageController.isAuthorized) {
+					activate();
+				}
 			});
 
 			// Wo wo wo, gross, this is happening because this method is called by googleApiClientReady which is on the global namespace and out of Angular's environment.
 			// $timeout will not generate a $digest already in progress
 			$timeout();
+		};
+
+		$scope.signIn = function(){
+			authService.signIn();
+		};
+
+
+		$scope.signOut = function(){
+			authService.signOut();
 		};
 
 		$scope.search = function() {
