@@ -12,14 +12,13 @@
 		playlistService.get = function() {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.playlists.list({
+			gapi.client.youtube.playlists.list({
 				part: 'snippet',
 				mine: true
-			});
-
-			request.execute(function(response) {
+			})
+			.then(function(response) {
 				deferred.resolve({
-					playlists: response.items
+					playlists: response.result.items
 				});
 			});
 			
@@ -37,15 +36,14 @@
 		playlistService.add = function(params) {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.playlists.insert({
+			gapi.client.youtube.playlists.insert({
 				part: 'snippet',
 				snippet: {
 					title: params.title
 				}
-			});
-
-			request.execute(function(response) {
-				deferred.resolve(response);
+			})
+			.then(function(response) {
+				deferred.resolve(response.result);
 			});
 			
 			return deferred.promise;

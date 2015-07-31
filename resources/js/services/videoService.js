@@ -17,14 +17,13 @@
 		videoService.details = function(params) {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.videos.list({
+			gapi.client.youtube.videos.list({
 				id: params.videoId,
 				part: 'snippet,statistics,player'
-			});
-
-			request.execute(function(response) {
+			})
+			.then(function(response) {
 				deferred.resolve({
-					video: response.items ? response.items[0] : {}
+					video: response.result.items ? response.result.items[0] : {}
 				});
 			});
 			
@@ -42,14 +41,13 @@
 		videoService.comments = function(params) {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.commentThreads.list({
+			gapi.client.youtube.commentThreads.list({
 				videoId: params.videoId,
 				part: 'snippet'
-			});
-
-			request.execute(function(response) {
+			})
+			.then(function(response) {
 				deferred.resolve({
-					comments: response.items
+					comments: response.result.items
 				});
 			});
 			

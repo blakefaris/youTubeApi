@@ -36,9 +36,10 @@
 				searchParams.locationRadius = '50mi';
 			}
 
-			gapi.client.youtube.search.list(searchParams).execute(function(response) {
+			gapi.client.youtube.search.list(searchParams)
+			.then(function(response) {
 				deferred.resolve({
-					videos: response.items
+					videos: response.result.items
 				});
 			});
 

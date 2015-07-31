@@ -17,15 +17,14 @@
 		playlistItemsService.get = function(params) {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.playlistItems.list({
+			gapi.client.youtube.playlistItems.list({
 				part: 'snippet,contentDetails',
 				playlistId: params.playlistId,
 				maxResults: 10
-			});
-
-			request.execute(function(response) {
+			})
+			.then(function(response) {
 				deferred.resolve({
-					videos: response.items
+					videos: response.result.items
 				});
 			});
 			
@@ -44,7 +43,7 @@
 		playlistItemsService.add = function(params) {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.playlistItems.insert({
+			gapi.client.youtube.playlistItems.insert({
 				part: 'snippet',
 				snippet: {
 					playlistId: params.playlistId,
@@ -53,12 +52,11 @@
 						videoId: params.videoId
 					}
 				}
-			});
-
-			request.execute(function(response) {
+			})
+			.then(function(response) {
 				deferred.resolve({
-					success: !response.error,
-					message: response.error ? response.error.message : ''
+					success: !response.result.error,
+					message: response.result.error ? response.error.message : ''
 				});
 			});
 			
@@ -76,14 +74,13 @@
 		playlistItemsService.remove = function(params) {
 			var deferred = $q.defer();
 
-			var request = gapi.client.youtube.playlistItems.delete({
+			gapi.client.youtube.playlistItems.delete({
 				id: params.playlistItemId
-			});
-
-			request.execute(function(response) {
+			})
+			.then(function(response) {
 				deferred.resolve({
-					success: !response.error,
-					message: response.error ? response.error.message : ''
+					success: !response.result.error,
+					message: response.result.error ? response.result.error.message : ''
 				});
 			});
 			
