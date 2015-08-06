@@ -17,8 +17,7 @@
 		If you run this code from a server other than http://localhost,
 		you need to register your own client ID.
 		*/
-		// TODO: wipe API key after demo and replace with token that needs to be replaced.
-		var OAUTH2_CLIENT_ID = '649255159208-1dp85vegiijvo7n9ugkoifmiolcm1iir.apps.googleusercontent.com';
+		var OAUTH2_CLIENT_ID = '[YOUR_OAUTH_CLIENT_ID]';
 		var OAUTH2_SCOPES = [
 			'https://www.googleapis.com/auth/youtube.force-ssl'
 		];
