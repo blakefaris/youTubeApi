@@ -19,6 +19,6 @@ Single-page web application which uses the YouTube Data API to provide a user in
 - Video player
 - Meta information like comments, likes, dislikes, channel
 - Ability to add/remove from favorites (see below)
-- 
+
 ### Playlist Videos
 - The list of videos the user has saved in their playlists
